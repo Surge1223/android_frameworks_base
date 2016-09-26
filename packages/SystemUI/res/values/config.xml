@@ -112,7 +112,7 @@
 
     <!-- Tiles native to System UI. Order should match "quick_settings_tiles_default" -->
     <string name="quick_settings_tiles_stock" translatable="false">
-        wifi,cell,battery,dnd,flashlight,rotation,bt,airplane,location,hotspot,inversion,saver,work,cast,night,high_brightness,caffeine,screenshot,ambient,sound,volume,nfc
+        wifi,cell,battery,dnd,flashlight,rotation,bt,airplane,location,hotspot,inversion,saver,work,cast,night,high_brightness,caffeine,screenshot,ambient,sound,volume,nfc,adb_network
     </string>
 
     <!-- The tiles to display in QuickSettings -->
@@ -320,7 +320,7 @@
     <string name="config_systemUIFactoryComponent" translatable="false">com.android.systemui.SystemUIFactory</string>
 
     <!-- Nav bar button default ordering/layout -->
-    <string name="config_navBarLayout" translatable="false">left[.5W],back[1WC];home;recent[1WC],right[.5W]</string>
+    <string name="config_navBarLayout" translatable="false">left[.5W],recent[1WC];home;back[1WC],right[.5W]</string>
 
     <bool name="quick_settings_show_full_alarm">false</bool>
 
