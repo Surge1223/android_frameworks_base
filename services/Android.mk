@@ -7,7 +7,13 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := services
 LOCAL_DEX_PREOPT_APP_IMAGE := true
 LOCAL_DEX_PREOPT_GENERATE_PROFILE := true
+
+ifeq ($(PLATFORM_VERSION), 8.1.0)
+LOCAL_DEX_PREOPT_PROFILE_CLASS_LISTING := $(LOCAL_PATH)/art-profile
+else
 LOCAL_DEX_PREOPT_PROFILE_CLASS_LISTING := $(LOCAL_PATH)/profile-classes
+endif
+
 LOCAL_REQUIRED_MODULES := projekt.substratum.theme.xml
 
 LOCAL_SRC_FILES := $(call all-java-files-under,java)
