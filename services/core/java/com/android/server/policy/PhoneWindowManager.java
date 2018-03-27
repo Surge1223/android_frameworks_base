@@ -135,6 +135,7 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -402,6 +403,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
 
     /** Amount of time (in milliseconds) a toast window can be shown. */
     public static final int TOAST_WINDOW_TIMEOUT = 3500; // 3.5 seconds
+
+    private DeviceKeyHandler mDeviceKeyHandler;
 
     /**
      * Lock protecting internal state.  Must not call out into window
@@ -811,7 +814,6 @@ public class PhoneWindowManager implements WindowManagerPolicy {
 
     private final MutableBoolean mTmpBoolean = new MutableBoolean(false);
 
-    private final List<DeviceKeyHandler> mDeviceKeyHandlers = new ArrayList<>();
 
     private static final int MSG_ENABLE_POINTER_LOCATION = 1;
     private static final int MSG_DISABLE_POINTER_LOCATION = 2;
@@ -2160,26 +2162,26 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 });
 
         final Resources res = mContext.getResources();
-        final String[] deviceKeyHandlerLibs = res.getStringArray(
-                org.lineageos.platform.internal.R.array.config_deviceKeyHandlerLibs);
-        final String[] deviceKeyHandlerClasses = res.getStringArray(
-                org.lineageos.platform.internal.R.array.config_deviceKeyHandlerClasses);
+        String deviceKeyHandlerLib = res.getString(
+                com.android.internal.R.string.config_deviceKeyHandlerLib);
 
-        for (int i = 0;
-                i < deviceKeyHandlerLibs.length && i < deviceKeyHandlerClasses.length; i++) {
+        String deviceKeyHandlerClass = res.getString(
+                com.android.internal.R.string.config_deviceKeyHandlerClass);
+
+        if (!deviceKeyHandlerLib.isEmpty() && !deviceKeyHandlerClass.isEmpty()) {
             try {
                 PathClassLoader loader = new PathClassLoader(
-                        deviceKeyHandlerLibs[i], getClass().getClassLoader());
-                Class<?> klass = loader.loadClass(deviceKeyHandlerClasses[i]);
+                        deviceKeyHandlerLib, getClass().getClassLoader());
+                Class<?> klass = loader.loadClass(deviceKeyHandlerClass);
                 Constructor<?> constructor = klass.getConstructor(Context.class);
-                mDeviceKeyHandlers.add((DeviceKeyHandler) constructor.newInstance(mContext));
+                mDeviceKeyHandler = (DeviceKeyHandler) constructor.newInstance(mContext);
             } catch (Exception e) {
                 Slog.w(TAG, "Could not instantiate device key handler "
-                        + deviceKeyHandlerLibs[i] + " from class "
-                        + deviceKeyHandlerClasses[i], e);
+                        + deviceKeyHandlerClass + " from class "
+                        + deviceKeyHandlerLib, e);
             }
         }
-        if (DEBUG) Slog.d(TAG, "" + mDeviceKeyHandlers.size() + " device key handlers loaded");
+        if (DEBUG) Slog.d(TAG, "Device key handler loaded");
     }
 
     /**
@@ -3856,6 +3858,13 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             }
         }
 
+
+       // Specific device key handling
+       if (dispatchKeyToKeyHandlers(event)) {
+           return 0;
+       }
+
+
         // Reserve all the META modifier combos for system behavior
         if ((metaState & KeyEvent.META_META_ON) != 0) {
             return -1;
@@ -3932,12 +3941,12 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     }
 
     private boolean dispatchKeyToKeyHandlers(KeyEvent event) {
-        for (DeviceKeyHandler handler : mDeviceKeyHandlers) {
+        if (mDeviceKeyHandler != null) {
             try {
                 if (DEBUG_INPUT) {
-                    Log.d(TAG, "Dispatching key event " + event + " to handler " + handler);
+                    Log.d(TAG, "Dispatching key event " + event + " to handler ");
                 }
-                event = handler.handleKeyEvent(event);
+                event = mDeviceKeyHandler.handleKeyEvent(event);
                 if (event == null) {
                     return true;
                 }
