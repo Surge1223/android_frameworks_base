@@ -22,7 +22,7 @@ import android.content.Intent;
 import android.service.quicksettings.Tile;
 import android.widget.Toast;
 
-import com.android.internal.util.abc.AbcUtils;
+import com.android.internal.util.subs.SubsUtils;
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.plugins.qs.QSTile.BooleanState;
@@ -38,7 +38,7 @@ public class PictureInPictureTile extends QSTileImpl<BooleanState> {
 
     @Override
     public int getMetricsCategory() {
-        return MetricsEvent.ABC;
+        return MetricsEvent.CUSTOM_SETTINGS;
     }
 
     @Override
@@ -52,13 +52,13 @@ public class PictureInPictureTile extends QSTileImpl<BooleanState> {
     @Override
     public void handleClick() {
         mHost.collapsePanels();
-        ActivityInfo ai = AbcUtils.getRunningActivityInfo(mContext);
+        ActivityInfo ai = SubsUtils.getRunningActivityInfo(mContext);
         if (ai != null && !ai.supportsPictureInPicture()) {
             Toast.makeText(mContext, mContext.getString(
                     R.string.quick_settings_pip_tile_app_na), Toast.LENGTH_LONG).show();
             return;
         }
-        AbcUtils.sendKeycode(171);
+        SubsUtils.sendShellKeycode(171);
     }
 
     @Override

@@ -76,7 +76,7 @@ import android.widget.Toast;
 import com.android.internal.colorextraction.ColorExtractor;
 import com.android.internal.colorextraction.ColorExtractor.GradientColors;
 import com.android.internal.messages.nano.SystemMessageProto.SystemMessage;
-import com.android.internal.util.abc.AbcUtils;
+import com.android.internal.util.subs.SubsUtils;
 import com.android.systemui.colorextraction.SysuiColorExtractor;
 import com.android.systemui.Dependency;
 import com.android.systemui.R;

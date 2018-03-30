@@ -21,7 +21,7 @@ import android.os.UserHandle;
 import android.provider.Settings;
 import android.service.quicksettings.Tile;
 
-import com.android.internal.util.abc.AbcUtils;
+import com.android.internal.util.subs.SubsUtils;
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 import com.android.systemui.qs.QSHost;
 import com.android.systemui.plugins.qs.QSTile.BooleanState;
@@ -39,7 +39,7 @@ public class ScreenshotTile extends QSTileImpl<BooleanState> {
 
     @Override
     public int getMetricsCategory() {
-        return MetricsEvent.ABC;
+        return MetricsEvent.CUSTOM_SETTINGS;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class ScreenshotTile extends QSTileImpl<BooleanState> {
         try {
              Thread.sleep(1000); //1s
         } catch (InterruptedException ie) {}
-        AbcUtils.takeScreenshot(mRegion ? false : true);
+        SubsUtils.takeScreenshot(mRegion ? false : true);
     }
 
     @Override
