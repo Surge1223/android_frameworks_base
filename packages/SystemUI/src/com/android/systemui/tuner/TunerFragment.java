@@ -35,15 +35,6 @@ import com.android.systemui.plugins.PluginPrefs;
 public class TunerFragment extends PreferenceFragment {
 
     private static final String TAG = "TunerFragment";
-    private static final String KEY_BATTERY_PCT = "battery_pct";
-    private static final String KEY_PLUGINS = "plugins";
-    private static final CharSequence KEY_DOZE = "doze";
-
-    public static final String SETTING_SEEN_TUNER_WARNING = "seen_tuner_warning";
-
-    private static final String WARNING_TAG = "tuner_warning";
-
-    private static final int MENU_REMOVE = Menu.FIRST + 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,23 +52,6 @@ public class TunerFragment extends PreferenceFragment {
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.tuner_prefs);
-        if (!PluginPrefs.hasPlugins(getContext())) {
-            getPreferenceScreen().removePreference(findPreference(KEY_PLUGINS));
-        }
-        if (!alwaysOnAvailable()) {
-            getPreferenceScreen().removePreference(findPreference(KEY_DOZE));
-        }
-
-        if (Settings.Secure.getInt(getContext().getContentResolver(), SETTING_SEEN_TUNER_WARNING,
-                0) == 0) {
-            if (getFragmentManager().findFragmentByTag(WARNING_TAG) == null) {
-                new TunerWarningFragment().show(getFragmentManager(), WARNING_TAG);
-            }
-        }
-    }
-
-    private boolean alwaysOnAvailable() {
-        return new AmbientDisplayConfiguration(getContext()).alwaysOnAvailable();
     }
 
     @Override
