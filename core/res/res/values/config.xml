@@ -163,7 +163,8 @@
     <!-- Whether dialogs should close automatically when the user touches outside
          of them.  This should not normally be modified. -->
     <bool name="config_closeDialogWhenTouchOutside">true</bool>
-
+    <!-- Whether to persist the notification for when a usb drive device is plugged in -->
+     <bool name="config_persistUsbDriveNotification">false</bool>
     <!-- Device configuration indicating whether we should avoid using accelerated graphics
          in certain places to reduce RAM footprint.  This is ignored if ro.config.low_ram
          is true (in that case this is assumed true as well).  It can allow you to tune down

@@ -884,7 +884,7 @@ final class DefaultPermissionGrantPolicy {
             }
             mService.mSettings.onDefaultRuntimePermissionsGrantedLPr(userId);
         }
-
+}
     private void grantDefaultPermissionsToDefaultSystemDialerAppLPr(
             PackageParser.Package dialerPackage, int userId) {
         if (doesPackageSupportRuntimePermissions(dialerPackage)) {
