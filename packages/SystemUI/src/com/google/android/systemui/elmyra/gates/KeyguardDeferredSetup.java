@@ -23,29 +23,19 @@ public class KeyguardDeferredSetup extends Gate
     private KeyguardVisibility mKeyguardGate;
     private Listener mKeyguardGateListener = new Listener() {
         @Override
-        public void onGestureDetected(GestureSensor gestureSensor) {
-
-        }
-
-        @Override
-        public void onGestureProgress(GestureSensor gestureSensor, float n, int n2) {
-
-        }
-
-        @Override
         public void onGateChanged(final Gate gate) {
             KeyguardDeferredSetup.this.notifyListener();
         }
     };
     private UserContentObserver mSettingsObserver;
-    
+
     public KeyguardDeferredSetup(final Context context, final List<Action> list) {
         super(context);
         this.mExceptions = new ArrayList<Action>(list);
         (this.mKeyguardGate = new KeyguardVisibility(context)).setListener(this.mKeyguardGateListener);
         this.mSettingsObserver = new UserContentObserver(context, Settings.Secure.getUriFor("assist_gesture_setup_complete"), new LambdaF((byte)0));
     }
-    
+
     private boolean isDeferredSetupComplete() {
         boolean b = false;
         final Uri assist_gesture_setup_complete = Secure.getUriFor(Uri.parse("assist_gesture_setup_complete"), "");

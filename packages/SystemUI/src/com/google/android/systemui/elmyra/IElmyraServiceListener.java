@@ -32,7 +32,7 @@ public interface IElmyraServiceListener extends IInterface {
 
         public boolean onTransact(int i, Parcel parcel, Parcel parcel2, int i2) throws RemoteException {
             switch (i) {
-                case 1:
+                case FLAG_ONEWAY:
                     parcel.enforceInterface("com.google.android.systemui.elmyra.IElmyraServiceListener");
                     setListener(parcel.readStrongBinder(), parcel.readStrongBinder());
                     return true;
@@ -40,7 +40,7 @@ public interface IElmyraServiceListener extends IInterface {
                     parcel.enforceInterface("com.google.android.systemui.elmyra.IElmyraServiceListener");
                     launchAssistant();
                     return true;
-                case 1598968902:
+                case INTERFACE_TRANSACTION:
                     parcel2.writeString("com.google.android.systemui.elmyra.IElmyraServiceListener");
                     return true;
                 default:

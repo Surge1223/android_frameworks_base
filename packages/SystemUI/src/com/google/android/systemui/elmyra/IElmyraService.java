@@ -25,7 +25,7 @@ public interface IElmyraService extends IInterface {
                 return null;
             }
             IInterface queryLocalInterface = iBinder.queryLocalInterface("com.google.android.systemui.elmyra.IElmyraService");
-            return (queryLocalInterface == null || !(queryLocalInterface instanceof IElmyraService)) ? new Proxy(iBinder) : (IElmyraService) queryLocalInterface;
+            return (!(queryLocalInterface instanceof IElmyraService)) ? new Proxy(iBinder) : (IElmyraService) queryLocalInterface;
         }
 
         public IBinder asBinder() {
@@ -34,7 +34,7 @@ public interface IElmyraService extends IInterface {
 
         public boolean onTransact(int i, Parcel parcel, Parcel parcel2, int i2) throws RemoteException {
             switch (i) {
-                case 1:
+                case FLAG_ONEWAY:
                     parcel.enforceInterface("com.google.android.systemui.elmyra.IElmyraService");
                     registerSettingsListener(parcel.readStrongBinder(), parcel.readStrongBinder());
                     return true;
@@ -46,7 +46,7 @@ public interface IElmyraService extends IInterface {
                     parcel.enforceInterface("com.google.android.systemui.elmyra.IElmyraService");
                     registerListener(parcel.readStrongBinder(), parcel.readStrongBinder());
                     return true;
-                case 1598968902:
+                case INTERFACE_TRANSACTION:
                     parcel2.writeString("com.google.android.systemui.elmyra.IElmyraService");
                     return true;
                 default:

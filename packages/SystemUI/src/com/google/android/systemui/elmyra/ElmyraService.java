@@ -21,7 +21,6 @@ import java.util.List;
 
 public class ElmyraService implements Dumpable {
     private Action.Listener mActionListener;
-    ;
     private List<Action> mActions;
     private Context mContext;
     private List<FeedbackEffect> mFeedbackEffects;
@@ -37,29 +36,9 @@ public class ElmyraService implements Dumpable {
     private PowerManager.WakeLock mWakeLock;
 
     public ElmyraService(final Context mContext, ServiceConfiguration serviceConfiguration) {
-        this.mActionListener = new Action.Listener() {
-            @Override
-            public void onActionAvailabilityChanged(Action action) {
-                ElmyraService.this.updateSensorListener();
-            }
-        };
+        this.mActionListener = action -> ElmyraService.this.updateSensorListener();
 
-        this.mGateListener = new Gate.Listener() {
-            @Override
-            public void onGestureDetected(GestureSensor gestureSensor) {
-
-            }
-
-            @Override
-            public void onGestureProgress(GestureSensor gestureSensor, float n, int n2) {
-
-            }
-
-            @Override
-            public void onGateChanged(Gate gate) {
-                ElmyraService.this.updateSensorListener();
-            }
-        };
+        this.mGateListener = gate -> ElmyraService.this.updateSensorListener();
 
         GestureListener mGestureListener = new GestureListener();
         mLogger = new MetricsLogger();
@@ -79,50 +58,49 @@ public class ElmyraService implements Dumpable {
         updateSensorListener();
     }
 
-
     private void activateGates() {
-        for (int i = 0; i < mGates.size(); ++i) {
-            mGates.get(i).activate();
+        for (int i = 0; i < this.mGates.size(); ++i) {
+            this.mGates.get(i).activate();
         }
     }
 
     private Gate blockingGate() {
-        for (int i = 0; i < mGates.size(); ++i) {
-            if (mGates.get(i).isBlocking()) {
-                return mGates.get(i);
+        for (int i = 0; i < this.mGates.size(); ++i) {
+            if (this.mGates.get(i).isBlocking()) {
+                return this.mGates.get(i);
             }
         }
         return null;
     }
 
     private void deactivateGates() {
-        for (int i = 0; i < mGates.size(); ++i) {
-            mGates.get(i).deactivate();
+        for (int i = 0; i < this.mGates.size(); ++i) {
+            this.mGates.get(i).deactivate();
         }
     }
 
     private Action firstAvailableAction() {
-        for (int i = 0; i < mActions.size(); ++i) {
-            if (mActions.get(i).isAvailable()) {
-                return mActions.get(i);
+        for (int i = 0; i < this.mActions.size(); ++i) {
+            if (this.mActions.get(i).isAvailable()) {
+                return this.mActions.get(i);
             }
         }
         return null;
     }
 
     private void startListening() {
-        if (mGestureSensor != null && (!mGestureSensor.isListening())) {
-            mGestureSensor.startListening();
+        if (this.mGestureSensor != null && !this.mGestureSensor.isListening()) {
+            this.mGestureSensor.startListening();
         }
     }
 
     private void stopListening() {
-        if (mGestureSensor != null && mGestureSensor.isListening()) {
-            mGestureSensor.stopListening();
-            for (int i = 0; i < mFeedbackEffects.size(); ++i) {
-                mFeedbackEffects.get(i).onRelease();
+        if (this.mGestureSensor != null && this.mGestureSensor.isListening()) {
+            this.mGestureSensor.stopListening();
+            for (int i = 0; i < this.mFeedbackEffects.size(); ++i) {
+                this.mFeedbackEffects.get(i).onRelease();
             }
-            Action updateActiveAction = updateActiveAction();
+            final Action updateActiveAction = this.updateActiveAction();
             if (updateActiveAction != null) {
                 updateActiveAction.onProgress(0.0f, 0);
             }
@@ -130,74 +108,101 @@ public class ElmyraService implements Dumpable {
     }
 
     private Action updateActiveAction() {
-        Action firstAvailableAction = firstAvailableAction();
-        if (mLastActiveAction != null && firstAvailableAction != mLastActiveAction) {
-            Log.i("Elmyra/ElmyraService", "Switching action from " + mLastActiveAction + " to " + firstAvailableAction);
-            mLastActiveAction.onProgress(0.0f, 0);
+        final Action firstAvailableAction = this.firstAvailableAction();
+        if (this.mLastActiveAction != null && firstAvailableAction != this.mLastActiveAction) {
+            final StringBuilder sb = new StringBuilder();
+            sb.append("Switching action from ");
+            sb.append(this.mLastActiveAction);
+            sb.append(" to ");
+            sb.append(firstAvailableAction);
+            Log.i("Elmyra/ElmyraService", sb.toString());
+            this.mLastActiveAction.onProgress(0.0f, 0);
         }
-        return mLastActiveAction = firstAvailableAction;
+        return this.mLastActiveAction = firstAvailableAction;
     }
 
     @Override
-    public void dump(final FileDescriptor fileDescriptor, PrintWriter printWriter, String[] array) {
-        printWriter.println(ElmyraService.class.getSimpleName() + " state:");
+    public void dump(final FileDescriptor fileDescriptor, final PrintWriter printWriter, final String[] array) {
+        final StringBuilder sb = new StringBuilder();
+        sb.append(ElmyraService.class.getSimpleName());
+        sb.append(" state:");
+        printWriter.println(sb.toString());
         printWriter.println("  Gates:");
-        for (int i = 0; i < mGates.size(); ++i) {
+        final int n = 0;
+        for (int i = 0; i < this.mGates.size(); ++i) {
             printWriter.print("    ");
-            if (mGates.get(i).isActive()) {
+            if (this.mGates.get(i).isActive()) {
                 String s;
-                if (mGates.get(i).isBlocking()) {
+                if (this.mGates.get(i).isBlocking()) {
                     s = "X ";
-                } else {
+                }
+                else {
                     s = "O ";
                 }
                 printWriter.print(s);
-            } else {
+            }
+            else {
                 printWriter.print("- ");
             }
-            printWriter.println(mGates.get(i).toString());
+            printWriter.println(this.mGates.get(i).toString());
         }
         printWriter.println("  Actions:");
-        for (int j = 0; j < mActions.size(); ++j) {
+        for (int j = 0; j < this.mActions.size(); ++j) {
             printWriter.print("    ");
             String s2;
-            if (mActions.get(j).isAvailable()) {
+            if (this.mActions.get(j).isAvailable()) {
                 s2 = "O ";
-            } else {
+            }
+            else {
                 s2 = "X ";
             }
             printWriter.print(s2);
-            printWriter.println(mActions.get(j).toString());
+            printWriter.println(this.mActions.get(j).toString());
         }
-        printWriter.println("  Active: " + mLastActiveAction);
-        if (mGestureSensor instanceof Dumpable) {
-            ((Dumpable) mGestureSensor).dump(fileDescriptor, printWriter, array);
+        final StringBuilder sb2 = new StringBuilder();
+        sb2.append("  Active: ");
+        sb2.append(this.mLastActiveAction);
+        printWriter.println(sb2.toString());
+        printWriter.println("  Feedback Effects:");
+        for (int k = n; k < this.mFeedbackEffects.size(); ++k) {
+            printWriter.print("    ");
+            printWriter.println(this.mFeedbackEffects.get(k).toString());
+        }
+        final StringBuilder sb3 = new StringBuilder();
+        sb3.append("  Gesture Sensor: ");
+        sb3.append(this.mGestureSensor.toString());
+        printWriter.println(sb3.toString());
+        if (this.mGestureSensor instanceof Dumpable) {
+            ((Dumpable)this.mGestureSensor).dump(fileDescriptor, printWriter, array);
         }
     }
 
     protected void updateSensorListener() {
-        Action updateActiveAction = updateActiveAction();
+        final Action updateActiveAction = this.updateActiveAction();
         if (updateActiveAction == null) {
             Log.i("Elmyra/ElmyraService", "No available actions");
-            deactivateGates();
-            stopListening();
+            this.deactivateGates();
+            this.stopListening();
             return;
         }
-        activateGates();
-        Gate blockingGate = blockingGate();
+        this.activateGates();
+        final Gate blockingGate = this.blockingGate();
         if (blockingGate != null) {
-            Log.i("Elmyra/ElmyraService", "Gated by " + blockingGate);
-            stopListening();
+            final StringBuilder sb = new StringBuilder();
+            sb.append("Gated by ");
+            sb.append(blockingGate);
+            Log.i("Elmyra/ElmyraService", sb.toString());
+            this.stopListening();
             return;
         }
-        Log.i("Elmyra/ElmyraService", "Unblocked; current action: " + updateActiveAction);
-        startListening();
+        final StringBuilder sb2 = new StringBuilder();
+        sb2.append("Unblocked; current action: ");
+        sb2.append(updateActiveAction);
+        Log.i("Elmyra/ElmyraService", sb2.toString());
+        this.startListening();
     }
 
     public class GestureListener implements GestureSensor.Listener {
-        public GestureListener() {
-
-        }
 
         public void onGestureDetected(final GestureSensor gestureSensor) {
             ElmyraService.this.mWakeLock.acquire(2000L);
@@ -253,3 +258,4 @@ public class ElmyraService implements Dumpable {
 
     }
 }
+

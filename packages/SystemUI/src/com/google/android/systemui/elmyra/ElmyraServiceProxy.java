@@ -3,6 +3,7 @@ package com.google.android.systemui.elmyra;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.RemoteException;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -67,9 +68,26 @@ public class ElmyraServiceProxy extends Service {
         };
     }
 
+    public void registerGestureListener(final IBinder binder, final IBinder binder2) {
+        checkPermission("com.google.android.elmyra.permission.CONFIGURE_ASSIST_GESTURE");
+        try {
+            for (int i = mElmyraServiceListeners.size() - 1; i >= 0; --i) {
+                final IElmyraServiceListener listener = ((ElmyraServiceListener) mElmyraServiceListeners.get(i)).getListener();
+                if (listener == null) {
+                    mElmyraServiceListeners.remove(i);
+                } else {
+                    listener.setListener(binder, binder2);
+                }
+            }
+        } catch (RemoteException ex) {
+            Log.e("Elmyra/ElmyraServiceProxy", "Action isn't connected", (Throwable) ex);
+        }
+    }
+
     private void checkPermission(String str) {
         enforceCallingOrSelfPermission(str, "Must have " + str + " permission");
     }
+
 
     public IBinder onBind(Intent intent) {
         return mBinder;

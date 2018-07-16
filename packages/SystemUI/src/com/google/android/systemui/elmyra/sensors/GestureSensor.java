@@ -1,15 +1,17 @@
 package com.google.android.systemui.elmyra.sensors;
 
-import android.support.annotation.Nullable;
-import com.google.android.systemui.elmyra.ElmyraService;
-import com.google.android.systemui.elmyra.gates.Gate;
+import java.util.Random;
 
-public interface GestureSensor extends Sensor {
+public interface GestureSensor extends Sensor
+{
+    void setGestureListener(final Listener p0);
 
-    void setGestureListener(@Nullable ElmyraService.GestureListener p0);
+    interface Listener
+    {
+        void onGestureDetected(final GestureSensor p0);
 
-    interface Listener {
-        void onGestureDetected(GestureSensor p0);
-        void onGestureProgress(GestureSensor p0, float p1, int p2);
+        void onGestureProgress(final GestureSensor p0, final float p1, final int p2);
+
     }
 }
+

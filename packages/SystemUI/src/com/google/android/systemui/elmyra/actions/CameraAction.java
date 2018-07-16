@@ -38,16 +38,6 @@ public class CameraAction extends Action
         super(context, null);
         this.mCameraVisibilityListener = new Gate.Listener() {
             @Override
-            public void onGestureDetected(GestureSensor gestureSensor) {
-
-            }
-
-            @Override
-            public void onGestureProgress(GestureSensor gestureSensor, float n, int n2) {
-
-            }
-
-            @Override
             public void onGateChanged(final Gate gate) {
                 CameraAction.this.checkCameraIsShowing();
             }

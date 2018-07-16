@@ -44,15 +44,6 @@ public class CameraVisibility extends Gate
             }
         };
         this.mGateListener = new Listener() {
-            @Override
-            public void onGestureDetected(GestureSensor gestureSensor) {
-
-            }
-
-            @Override
-            public void onGestureProgress(GestureSensor gestureSensor, float n, int n2) {
-
-            }
 
             @Override
             public void onGateChanged(final Gate gate) {
