@@ -22,7 +22,7 @@ NOTIFICATION_FILES := \
          Beginning Coconuts Duet End_note Gentle_gong Mallet Orders_up Ping Pipes \
          Popcorn Shopkeeper Sticks_and_stones Tuneup Tweeter Twinkle
 
-RINGTONES_FILES := \
+RINGTONE_FILES := \
           Copycat Crackle Flutterby Hotline Leaps_and_bounds Lollipop Lost_and_found \
           Mash_up Monkey_around Schools_out The_big_adventure Zen_too
 
