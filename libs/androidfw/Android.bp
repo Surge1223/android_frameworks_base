@@ -64,19 +64,21 @@ cc_library {
                 "BackupHelpers.cpp",
                 "CursorWindow.cpp",
                 "DisplayEventDispatcher.cpp",
-            ],
+       ],
             shared_libs: [
-                "libziparchive",
-                "libbase",
                 "libbinder",
-                "liblog",
-                "libcutils",
                 "libgui",
-                "libutils",
                 "libz",
             ],
+            static_libs: [
+                "libziparchive",
+                "libbase",
+                "liblog",
+                "libcutils",
+                "libutils",
+            ],
             static: {
-                enabled: false,
+                enabled: true,
             },
         },
         host: {

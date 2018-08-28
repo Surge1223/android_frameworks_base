@@ -48,4 +48,20 @@ LOCAL_STATIC_LIBRARIES := libaapt $(aaptHostStaticLibs)
 
 include $(BUILD_HOST_EXECUTABLE)
 
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := aapt
+LOCAL_CFLAGS := -DAAPT_VERSION=\"$(BUILD_NUMBER_FROM_FILE)\" $(aaptCFlags)
+LOCAL_SRC_FILES := Main.cpp
+LOCAL_STATIC_LIBRARIES := libaapt-static $(aaptHostStaticLibs)
+
+LOCAL_MODULE_STEM_32 := aapt
+LOCAL_MODULE_STEM_64 := aapt64
+LOCAL_MODULE_PATH_32 := $(PRODUCT_OUT)/system/app/bin
+LOCAL_MODULE_PATH_64 := $(PRODUCT_OUT)/system/app/bin
+LOCAL_MULTILIB := both
+
+include $(BUILD_EXECUTABLE)
+
+
 endif # No TARGET_BUILD_APPS or TARGET_BUILD_PDK
