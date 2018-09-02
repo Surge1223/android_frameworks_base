@@ -280,12 +280,17 @@ public final class SubstratumService extends SystemService {
                         Settings.Global.putInt(mContext.getContentResolver(),
                                 Settings.Global.PACKAGE_VERIFIER_ENABLE, 0);
                         try {
-                            mPm.installExistingPackageAsUser(
+                            mPm.installExistingPackageAsUser(mInstalledPackageName, 0, -1, -1);
+
+                        } catch (RemoteException e) {
+                            logE("Fuck There is an exception when trying to install " + path, e);
+                            continue;
+                        }
+try {                            mPm.installExistingPackageAsUser(
                                     mInstalledPackageName,
                                     UserHandle.USER_SYSTEM,
                                     PackageManager.INSTALL_REPLACE_EXISTING,
                                     PackageManager.INSTALL_REASON_UNKNOWN);
-
                             while (mIsWaiting) {
                                 try {
                                     Thread.sleep(1);
