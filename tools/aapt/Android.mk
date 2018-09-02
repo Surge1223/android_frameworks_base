@@ -49,17 +49,28 @@ LOCAL_STATIC_LIBRARIES := libaapt $(aaptHostStaticLibs)
 include $(BUILD_HOST_EXECUTABLE)
 
 include $(CLEAR_VARS)
-
 LOCAL_MODULE := aapt
-LOCAL_CFLAGS := -DAAPT_VERSION=\"$(BUILD_NUMBER_FROM_FILE)\" $(aaptCFlags)
-LOCAL_SRC_FILES := Main.cpp
-LOCAL_STATIC_LIBRARIES := libaapt-static $(aaptHostStaticLibs)
 
+LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_STEM_32 := aapt
 LOCAL_MODULE_STEM_64 := aapt64
-LOCAL_MODULE_PATH_32 := $(PRODUCT_OUT)/system/app/bin
-LOCAL_MODULE_PATH_64 := $(PRODUCT_OUT)/system/app/bin
+
+ifdef TARGET_2ND_ARCH
 LOCAL_MULTILIB := both
+LOCAL_SRC_FILES_64 := Main.cpp
+LOCAL_SRC_FILES_32 := Main.cpp
+else
+LOCAL_SRC_FILES := Main.cpp
+endif
+
+LOCAL_CFLAGS := -DAAPT_VERSION=\"android-$(PLATFORM_VERSION)-$(TARGET_BUILD_VARIANT)-$(BUILD_NUMBER_FROM_FILE)\" $(aaptCFlags)
+LOCAL_STATIC_LIBRARIES := libaapt-static $(aaptHostStaticLibs)
+
+ifdef AAPT_STATIC
+LOCAL_LDFLAGS += -static
+LOCAL_FORCE_STATIC_EXECUTABLE := true
+LOCAL_PACK_MODULE_RELOCATIONS := false
+endif
 
 include $(BUILD_EXECUTABLE)
 

@@ -65,22 +65,29 @@ cc_library {
                 "CursorWindow.cpp",
                 "DisplayEventDispatcher.cpp",
        ],
-            shared_libs: [
-                "libbinder",
-                "libgui",
-                "libz",
-            ],
-            static_libs: [
-                "libziparchive",
-                "libbase",
-                "liblog",
-                "libcutils",
-                "libutils",
-            ],
-            static: {
+            cflags: ["-DSTATIC_ANDROIDFW_FOR_TOOLS"],
+
+            shared: {
                 enabled: true,
             },
-        },
+            shared_libs: [
+                "libbase",
+                "libgui",
+                "libvndksupport",
+                "libhardware",
+            ],
+            static_libs: [
+                 "libziparchive",
+                 "libbinder",
+                 "liblog",
+                 "libcutils",
+                 "libutils",
+                 "libz",
+             ],
+             static: {
+                enabled: true,
+             },
+         },
         host: {
             shared: {
                 enabled: false,
