@@ -98,43 +98,6 @@ cc_library_host_static {
     ],
 }
 
-cc_library_static {
-    name: "libaapt-static",
-    defaults: ["aapt_defaults"],
-    target: {
-        android: {
-        },
-    },
-    cflags: [
-        "-Wno-format-y2k",
-        "-DSTATIC_ANDROIDFW_FOR_TOOLS",
-    ],
-
-    srcs: [
-        "AaptAssets.cpp",
-        "AaptConfig.cpp",
-        "AaptUtil.cpp",
-        "AaptXml.cpp",
-        "ApkBuilder.cpp",
-        "Command.cpp",
-        "CrunchCache.cpp",
-        "FileFinder.cpp",
-        "Images.cpp",
-        "Package.cpp",
-        "pseudolocalize.cpp",
-        "Resource.cpp",
-        "ResourceFilter.cpp",
-        "ResourceIdCache.cpp",
-        "ResourceTable.cpp",
-        "SourcePos.cpp",
-        "StringPool.cpp",
-        "WorkQueue.cpp",
-        "XMLNode.cpp",
-        "ZipEntry.cpp",
-        "ZipFile.cpp",
-    ],
-}
-
 // ==========================================================
 // Build the host tests: libaapt_tests
 // ==========================================================
