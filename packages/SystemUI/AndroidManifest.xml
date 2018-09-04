@@ -265,21 +265,6 @@
         android:defaultToDeviceProtectedStorage="true"
         android:directBootAware="true"
         android:appComponentFactory="android.support.v4.app.CoreComponentFactory">
-        <receiver
-            android:name="com.google.android.systemui.WallpaperPermissionsReceiver"
-            android:permission="com.google.android.gms.permission.GRANT_WALLPAPER_PERMISSIONS">
-            <intent-filter>
-                <action android:name="com.google.android.systemui.GRANT_WALLPAPER_PERMISSIONS" />
-            </intent-filter>
-        </receiver>
-        <service
-            android:name="com.google.android.systemui.elmyra.ElmyraServiceProxy"
-            android:exported="true"
-            android:permission="com.google.android.elmyra.permission.CONFIGURE_ASSIST_GESTURE" />
-        <provider
-            android:name="com.google.android.systemui.keyguard.KeyguardSliceProviderGoogle"
-            android:authorities="com.android.systemui.keyguard"
-            android:exported="true" />
         <!-- Keep theme in sync with SystemUIApplication.onCreate().
              Setting the theme on the application does not affect views inflated by services.
              The application theme is set again from onCreate to take effect for those views. -->
