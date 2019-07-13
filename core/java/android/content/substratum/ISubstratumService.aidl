@@ -165,6 +165,5 @@ interface ISubstratumService {
      * @param userId The user for which to change the overlay.
      * @return true if the system successfully registered the request, false otherwise.
      */
-    boolean setEnabled(in String packageName, in boolean enable, in int userId);
 }
 
