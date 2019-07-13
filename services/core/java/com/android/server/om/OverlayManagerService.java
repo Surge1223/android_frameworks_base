@@ -576,7 +576,7 @@ public final class OverlayManagerService extends SystemService {
         @Override
         public boolean setEnabledExclusiveInCategory(@Nullable String packageName, int userId)
                 throws RemoteException {
-            enforceChangeOverlayPackagesPermission("setEnabled");
+//            enforceChangeOverlayPackagesPermission("setEnabled");
             userId = handleIncomingUser(userId, "setEnabled");
             if (packageName == null) {
                 return false;
@@ -596,7 +596,7 @@ public final class OverlayManagerService extends SystemService {
         @Override
         public boolean setPriority(@Nullable final String packageName,
                 @Nullable final String parentPackageName, int userId) throws RemoteException {
-            enforceChangeOverlayPackagesPermission("setPriority");
+//            enforceChangeOverlayPackagesPermission("setPriority");
             userId = handleIncomingUser(userId, "setPriority");
             if (packageName == null || parentPackageName == null) {
                 return false;
@@ -615,7 +615,7 @@ public final class OverlayManagerService extends SystemService {
         @Override
         public boolean setHighestPriority(@Nullable final String packageName, int userId)
                 throws RemoteException {
-            enforceChangeOverlayPackagesPermission("setHighestPriority");
+//            enforceChangeOverlayPackagesPermission("setHighestPriority");
             userId = handleIncomingUser(userId, "setHighestPriority");
             if (packageName == null) {
                 return false;
@@ -634,7 +634,7 @@ public final class OverlayManagerService extends SystemService {
         @Override
         public boolean setLowestPriority(@Nullable final String packageName, int userId)
                 throws RemoteException {
-            enforceChangeOverlayPackagesPermission("setLowestPriority");
+//            enforceChangeOverlayPackagesPermission("setLowestPriority");
             userId = handleIncomingUser(userId, "setLowestPriority");
             if (packageName == null) {
                 return false;
