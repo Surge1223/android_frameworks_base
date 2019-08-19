@@ -25,6 +25,10 @@ cc_defaults {
             // The Windows compiler warns incorrectly for value initialization with {}.
             cppflags: ["-Wno-missing-field-initializers"],
         },
+	android: {
+            cflags: ["-DSTATIC_ANDROIDFW_FOR_TOOLS"],
+	    enabled: true,
+	},
         host: {
             cflags: ["-DSTATIC_ANDROIDFW_FOR_TOOLS"],
         },
@@ -76,7 +80,7 @@ cc_library {
                 "libz",
             ],
             static: {
-                enabled: false,
+                enabled: true,
             },
         },
         host: {

@@ -62,6 +62,8 @@ extern status_t filterResources(Bundle* bundle, const sp<AaptAssets>& assets);
 
 int dumpResources(Bundle* bundle);
 
+int main(int argc, char* const argv[]);
+
 status_t writeDependencyPreReqs(Bundle* bundle, const sp<AaptAssets>& assets,
                                 FILE* fp, bool includeRaw);
 

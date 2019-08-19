@@ -35,6 +35,11 @@ cc_defaults {
     ],
     group_static_libs: true,
 
+    //
+    // Creates an executable that statically links to its dependencies (e.g. bionic).
+    //
+    static_executable: true,
+
     cflags: [
         "-Wall",
         "-Werror",
@@ -42,6 +47,13 @@ cc_defaults {
 
     target: {
         windows: {
+            enabled: true,
+            cflags: ["-Wno-maybe-uninitialized"],
+        },
+        //
+        // Build for Android devices.
+        //
+        android: {
             enabled: true,
         },
     },
@@ -60,18 +72,45 @@ cc_defaults {
 // ==========================================================
 // Build the host static library: libaapt
 // ==========================================================
-cc_library_host_static {
+cc_library {
     name: "libaapt",
     defaults: ["aapt_defaults"],
+    host_supported: true,
     target: {
         darwin: {
             cflags: ["-D_DARWIN_UNLIMITED_STREAMS"],
         },
+
+        //        
+        // Build as a static library targetting Android devices.
+        //
+        android: {
+    static_libs: [
+        "libandroidfw",
+        "libpng",
+        "libutils",
+        "liblog",
+        "libcutils",
+        "libexpat",
+        "libziparchive",
+        "libbase",
+        "libz",
+        "libc++_static",
+    ],
+            static: {
+                enabled: true,
+            },
+            shared: {
+                enabled: true,
+            },
+	}
     },
     cflags: [
         "-Wno-format-y2k",
         "-DSTATIC_ANDROIDFW_FOR_TOOLS",
+        "-Wno-unused-result",
     ],
+
 
     srcs: [
         "AaptAssets.cpp",
@@ -95,8 +134,33 @@ cc_library_host_static {
         "XMLNode.cpp",
         "ZipEntry.cpp",
         "ZipFile.cpp",
+        "Main.cpp",
+        "aapt_jni.cpp",
     ],
 }
+
+ // ==========================================================
+ // Build the host executable: aapt
+ // ==========================================================
+cc_binary {
+     name: "aapt",
+     defaults: ["aapt_defaults"],
+     cflags: [
+         "-Wno-unused-result",
+    ],
+     srcs: [
+         "Main.cpp",
+         "aapt_jni.cpp",
+     ],
+     use_version_lib: true,
+     host_supported: true,
+
+    //
+    //  Create an uber-static library that has all of its dependencies packaged with it.
+    //
+    whole_static_libs: ["libaapt"],
+ }
+
 
 // ==========================================================
 // Build the host tests: libaapt_tests
