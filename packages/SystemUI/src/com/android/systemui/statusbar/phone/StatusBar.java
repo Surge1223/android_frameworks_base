@@ -1889,9 +1889,12 @@ public class StatusBar extends SystemUI implements DemoMode,
                 UserHandle.USER_CURRENT) == 1;
     }
 
-    private void setHideArrowForBackGesture() {
-        if (getNavigationBarView() != null) {
-            getNavigationBarView().updateBackArrowForGesture();
+    private void setPulseOnNewTracks() {
+        KeyguardSliceProvider sliceProvider = KeyguardSliceProviderGoogle.getAttachedInstance();
+        if (sliceProvider != null) {
+            sliceProvider.setPulseOnNewTracks(Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.PULSE_ON_NEW_TRACKS, 1,
+                UserHandle.USER_CURRENT) == 1);
         }
     }
 
