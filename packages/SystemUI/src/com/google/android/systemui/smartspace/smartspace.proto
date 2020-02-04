@@ -2,7 +2,7 @@ syntax = "proto2";
 
 package SmartspaceProto;
 
-option java_package = "com.google.android.systemui.smartspace";
+option java_package = "com.android.systemui.smartspace";
 option java_outer_classname = "SmartspaceProto";
 
 message SmartspaceUpdate {
